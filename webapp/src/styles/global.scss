@@ -1,0 +1,32 @@
+/* stylelint-disable */
+@import "../../../../idea-site/webapp/src/styles/vars";
+@import "../../node_modules/include-media/dist/_include-media";
+/* stylelint-enable */
+
+html,
+body,
+#root {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: rgb(218, 229, 255);
+}
+
+body {
+  font-family: $defaultFontFamily;
+  font-size: $defaultFontSize;
+  background: $defaultBackgroundColor;
+  color: $defaultTextColor;
+  line-height: $defaultLineHeight;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,9 @@
+/* stylelint-disable */
+@import "../../../../../idea-site/webapp/src/styles/vars";
+@import "../../../../../idea-site/webapp/src/styles/mixins";
+/* stylelint-enable */
+
+.titel {
+  @include h1;
+  margin-bottom: 2px;
+}

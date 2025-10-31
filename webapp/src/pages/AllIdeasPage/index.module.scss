@@ -1,0 +1,19 @@
+/* stylelint-disable */
+@import "../../../../../idea-site/webapp/src/styles/vars";
+@import "../../../../../idea-site/webapp/src/styles/mixins";
+/* stylelint-enable */
+
+.ideas {
+  .idea {
+    padding: 20px;
+    border: 1px solid $black;
+    border-radius: 10px;
+    background-color: rgba(191, 226, 233, 0.976);
+    & + .idea {
+      margin-top: 20px;
+    }
+    .ideaLink {
+      @include link;
+    }
+  }
+}
