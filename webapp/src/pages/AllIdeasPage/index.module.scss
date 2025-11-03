@@ -8,10 +8,12 @@
     padding: 20px;
     border: 1px solid $black;
     border-radius: 10px;
-    background-color: rgba(191, 226, 233, 0.976);
+    background-color: rgb(191, 226, 233, 0.976);
+
     & + .idea {
       margin-top: 20px;
     }
+
     .ideaLink {
       @include link;
     }
