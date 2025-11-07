@@ -1,9 +1,13 @@
 import { useFormik } from "formik"
+import { withZodSchema } from "formik-validator-zod"
+import { z } from "zod"
 import { Input } from "../../components/Input"
 import { Segment } from "../../components/Segment"
 import { Textarea } from "../../components/Textarea"
+import { trpc } from "../../lib/trpc"
 
 export const NewIdeaPage = () => {
+  const createIdea = trpc.createIdea.useMutation()
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -11,28 +15,20 @@ export const NewIdeaPage = () => {
       description: "",
       text: "",
     },
-    validate: (values) => {
-      const errors: Partial<typeof values> = {}
-      if (!values.name) {
-        errors.name = "Name is required"
-      }
-      if (!values.nick) {
-        errors.nick = "Nick is required"
-      } else if (!values.nick.match(/^[a-z0-9-]+$/)) {
-        errors.nick = "Nick may contain only lowercase letters, numbers and dashes"
-      }
-      if (!values.description) {
-        errors.description = "Description is required"
-      }
-      if (!values.text) {
-        errors.text = "Text is required"
-      } else if (values.text.length < 20) {
-        errors.text = "Text should be at least 20 characters long"
-      }
-      return errors
-    },
-    onSubmit: (values) => {
-      console.info("Submitted", values)
+
+    validate: withZodSchema(
+      z.object({
+        name: z.string().min(1),
+        nick: z
+          .string()
+          .min(1)
+          .regex(/^[a-z0-9-]+$/, "Nick may contain only lowercase letters, numbers and dashes"),
+        description: z.string().min(1),
+        text: z.string().min(20, "Text should be at least 20 characters long"),
+      })
+    ),
+    onSubmit: async (values) => {
+      await createIdea.mutateAsync(values)
     },
   })
 
@@ -48,7 +44,7 @@ export const NewIdeaPage = () => {
         <Input name="nick" label="Nick" formik={formik} />
         <Input name="description" label="Description" formik={formik} />
         <Textarea name="text" label="Text" formik={formik} />
-        {!formik.isValid && <div style={{ color: "red" }}>Some fields are invalid</div>}
+        {!formik.isValid && !!formik.submitCount && <div style={{ color: "red" }}>Some fields are invalid</div>}
 
         <button type="submit">Create Idea</button>
       </form>
