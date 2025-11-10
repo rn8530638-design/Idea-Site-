@@ -16,10 +16,10 @@ export const Input = ({ name, label, formik }: { name: string; label: string; fo
         onBlur={() => {
           void formik.setFieldTouched(name)
         }}
-
         value={value}
         name={name}
         id={name}
+        disabled={formik.isSubmitting}
       />
       {!!touched && !!error && <div style={{ color: "red" }}>{error} </div>}
     </div>

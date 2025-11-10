@@ -1,6 +1,6 @@
+import { zCreateIdeaTrpcInput } from "@ideanick/backend/src/router/createIdea/input"
 import { useFormik } from "formik"
 import { withZodSchema } from "formik-validator-zod"
-import { z } from "zod"
 import { Input } from "../../components/Input"
 import { Segment } from "../../components/Segment"
 import { Textarea } from "../../components/Textarea"
@@ -15,18 +15,7 @@ export const NewIdeaPage = () => {
       description: "",
       text: "",
     },
-
-    validate: withZodSchema(
-      z.object({
-        name: z.string().min(1),
-        nick: z
-          .string()
-          .min(1)
-          .regex(/^[a-z0-9-]+$/, "Nick may contain only lowercase letters, numbers and dashes"),
-        description: z.string().min(1),
-        text: z.string().min(20, "Text should be at least 20 characters long"),
-      })
-    ),
+    validate: withZodSchema(zCreateIdeaTrpcInput),
     onSubmit: async (values) => {
       await createIdea.mutateAsync(values)
     },
@@ -46,7 +35,9 @@ export const NewIdeaPage = () => {
         <Textarea name="text" label="Text" formik={formik} />
         {!formik.isValid && !!formik.submitCount && <div style={{ color: "red" }}>Some fields are invalid</div>}
 
-        <button type="submit">Create Idea</button>
+        <button type="submit" disabled={formik.isSubmitting}>{
+          formik.isSubmitting ? 'submiting...' : "Create Idea"
+          }</button>
       </form>
     </Segment>
   )
